@@ -8,6 +8,8 @@ def main():
         command = sys.stdin.readline().strip()
         if not command:
             continue
+        elif command == "exit":
+            break
         sys.stderr.write(f"{command}: command not found \n")
         sys.stderr.flush()
 
