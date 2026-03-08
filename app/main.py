@@ -14,17 +14,24 @@ def main():
         elif command == "exit":
             break
         elif parts[0] == "echo":
-            sys.stdout.write(f"{parts[1]}\n")
-            sys.stdout.flush()
+            write_output(f"{parts[1]}", "info")
             continue
         elif parts[0] == "type":
             if parts[1] in builtins:
-                sys.stdout.write(f"{parts[1]} is a shell builtin\n")
+                write_output(f"{parts[1]} is a shell builtin", "info")
             else:
-                sys.stdout.write(f"{parts[1]}: not found\n")
+                write_output(f"{parts[1]}: not found", "error")
             continue
 
-        sys.stderr.write(f"{command}: command not found\n")
+        write_output(f"{command}: command not found", "error")
+
+
+def write_output(output, type):
+    if type == "info":
+        sys.stdout.write(f"{output}\n")
+        sys.stdout.flush()
+    elif type == "error":
+        sys.stderr.write(f"{output}\n")
         sys.stderr.flush()
 
 
