@@ -2,10 +2,14 @@ import sys
 
 
 def main():
-    sys.stdout.write("$ ")
-    sys.stdout.flush()
-    command = sys.stdin.readline().strip()
-    sys.stderr.write(f"{command}: command not found")
+    while True:
+        sys.stdout.write("$ ")
+        sys.stdout.flush()
+        command = sys.stdin.readline().strip()
+        if not command:
+            continue
+        sys.stderr.write(f"{command}: command not found \n")
+        sys.stderr.flush()
 
 
 if __name__ == "__main__":
