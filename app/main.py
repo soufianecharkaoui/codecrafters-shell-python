@@ -1,5 +1,7 @@
 import sys
 
+builtins = ["echo", "exit", "type"]
+
 
 def main():
     while True:
@@ -11,12 +13,18 @@ def main():
             continue
         elif command == "exit":
             break
-        elif command.split()[0] == "echo":
+        elif parts[0] == "echo":
             sys.stdout.write(f"{parts[1]}\n")
             sys.stdout.flush()
             continue
+        elif parts[0] == "type":
+            if parts[1] in builtins:
+                sys.stdout.write(f"{parts[1]} is a shell builtin\n")
+            else:
+                sys.stdout.write(f"{parts[1]}: not found\n")
+            continue
 
-        sys.stderr.write(f"{command}: command not found \n")
+        sys.stderr.write(f"{command}: command not found\n")
         sys.stderr.flush()
 
 
