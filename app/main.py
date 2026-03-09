@@ -7,23 +7,28 @@ def main():
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        command = sys.stdin.readline().strip()
-        parts = command.split(None, 1)
-        if not command:
-            continue
-        elif command == "exit":
-            break
-        elif parts[0] == "echo":
-            write_output(f"{parts[1]}", "info")
-            continue
-        elif parts[0] == "type":
-            if parts[1] in builtins:
-                write_output(f"{parts[1]} is a shell builtin", "info")
-            else:
-                write_output(f"{parts[1]}: not found", "error")
+        command_line = sys.stdin.readline().strip()
+
+        if not command_line:
             continue
 
-        write_output(f"{command}: command not found", "error")
+        parts = command_line.split(None, 1)
+        command = parts[0]
+        args = parts[1] if len(parts) > 1 else ""
+
+        if command_line == "exit":
+            break
+        elif command == "echo":
+            write_output(f"{args}", "info")
+            continue
+        elif command == "type":
+            if args in builtins:
+                write_output(f"{args} is a shell builtin", "info")
+            else:
+                write_output(f"{args}: not found", "error")
+            continue
+
+        write_output(f"{command_line}: command not found", "error")
 
 
 def write_output(output, type):
