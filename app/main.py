@@ -1,4 +1,5 @@
 import sys
+import os
 
 builtins = ["echo", "exit", "type"]
 
@@ -25,7 +26,18 @@ def main():
             if args in builtins:
                 write_output(f"{args} is a shell builtin", "info")
             else:
-                write_output(f"{args}: not found", "error")
+                is_executable = False
+                for path in os.get_exec_path():
+                    if os.access(path, os.F_OK) and any(
+                        file == args and os.access(os.path.join(path, args), os.X_OK)
+                        for file in os.listdir(path)
+                    ):
+                        is_executable = True
+                        write_output(f"{args} is {os.path.join(path, args)}", "info")
+                        break
+                write_output(
+                    f"{args}: not found", "error"
+                ) if not is_executable else None
             continue
 
         write_output(f"{command_line}: command not found", "error")
