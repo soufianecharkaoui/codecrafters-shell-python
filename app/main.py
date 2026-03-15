@@ -28,12 +28,10 @@ def main():
             else:
                 is_executable = False
                 for path in os.get_exec_path():
-                    if os.access(path, os.F_OK) and any(
-                        file == args and os.access(os.path.join(path, args), os.X_OK)
-                        for file in os.listdir(path)
-                    ):
+                    full_path = os.path.join(path, args)
+                    if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                         is_executable = True
-                        write_output(f"{args} is {os.path.join(path, args)}", "info")
+                        write_output(f"{args} is {full_path}", "info")
                         break
                 write_output(
                     f"{args}: not found", "error"
